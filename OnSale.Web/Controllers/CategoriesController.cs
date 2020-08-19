@@ -14,7 +14,7 @@ using OnSale.Web.Models;
 
 namespace OnSale.Web.Controllers
 {
- //   [Authorize(Roles = "Manager")]
+    [Authorize(Roles = "Admin")]
     public class CategoriesController : Controller
     {
         private readonly DataContext _context;
