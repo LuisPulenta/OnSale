@@ -48,6 +48,7 @@ namespace OnSale.Web.Controllers
 
             var Category = await _context.Categories
                 .Include(t => t.Products)
+                .ThenInclude(m => m.ProductImages)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (Category == null)
             {

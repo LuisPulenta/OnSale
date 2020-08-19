@@ -37,7 +37,7 @@ namespace OnSale.Common.Entities
         //TODO: Pending to put the correct paths
         [Display(Name = "Image")]
         public string ImageFullPath => ProductImages == null || ProductImages.Count == 0
-            ? "http://keypress.serveftp.net:88/OnSale/images/Products/noImage.png"
+            ? $"https://localhost:44312/images/Products/noimage.png"
             : ProductImages.FirstOrDefault().ImageFullPath;
     }
 }
