@@ -33,30 +33,10 @@ namespace OnSale.Web.Controllers
         // GET: Categories
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Categories
-                 .Include(t => t.Products)
-                 .OrderBy(t => t.Name).ToListAsync());
+            return View(await _context.Categories.ToListAsync());
         }
 
-        // GET: Categories/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var Category = await _context.Categories
-                .Include(t => t.Products)
-                .ThenInclude(m => m.ProductImages)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (Category == null)
-            {
-                return NotFound();
-            }
-
-            return View(Category);
-        }
+        
 
         // GET: Categories/Create
         public IActionResult Create()

@@ -10,7 +10,6 @@ namespace OnSale.Common.Entities
         [Display(Name = "Image")]
         public string ImageUrl { get; set; }
 
-        public Product Product { get; set; }
 
         // TODO: Change the path when publish
         public string ImageFullPath => string.IsNullOrEmpty(ImageUrl)

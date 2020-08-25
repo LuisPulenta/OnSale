@@ -22,7 +22,7 @@ namespace OnSale.Web.Controllers.API
             return Ok(_context.Products
                 .Include(p => p.Category)
                 .Include(p => p.ProductImages)
-                .Where(p => p.IsActive));
+                .OrderBy(p => p.Name));
         }
     }
 }

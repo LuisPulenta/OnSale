@@ -16,9 +16,6 @@ namespace OnSale.Common.Entities
         [Display(Name = "Image")]
         public string ImagePath { get; set; }
 
-
-        public ICollection<Product> Products { get; set; }
-
         [Display(Name = "Image")]
         public string ImageFullPath => string.IsNullOrEmpty(ImagePath)
            ? $"http://keypress.serveftp.net:88/OnSaleApi/images/Categories/noimage.png"
