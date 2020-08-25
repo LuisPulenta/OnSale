@@ -21,7 +21,7 @@ namespace OnSale.Common.Entities
 
         [Display(Name = "Image")]
         public string ImageFullPath => string.IsNullOrEmpty(ImagePath)
-           ? $"https://localhost:44312/images/Categories/noimage.png"
+           ? $"http://keypress.serveftp.net:88/OnSaleApi/images/Categories/noimage.png"
            : $"http://keypress.serveftp.net:88/OnSaleApi{ImagePath.Substring(1)}";
     }
 }

@@ -15,8 +15,8 @@ namespace OnSale.Common.Entities
         // TODO: Change the path when publish
         public string ImageFullPath => string.IsNullOrEmpty(ImageUrl)
           //? "noimage"//null
-           ? $"https://localhost:44312/images/Products/noimage.png"
+           ? $"http://keypress.serveftp.net:88/OnSaleApi/images/Products/noimage.png"
         //: $"http://keypress.serveftp.net:88/OnSaleApi{ImageUrl.Substring(1)}";
-        : $"https://localhost:44312{ImageUrl.Substring(1)}";
+        : $"http://keypress.serveftp.net:88/OnSaleApi{ImageUrl.Substring(1)}";
     }
 }

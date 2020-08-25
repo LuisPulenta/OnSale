@@ -31,7 +31,7 @@ namespace OnSale.Web.Data.Entities
         //TODO: Pending to put the correct paths
         [Display(Name = "Image")]
         public string ImageFullPath => string.IsNullOrEmpty(ImagePath)
-            ? $"https://localhost:44312/images/Users/nouser.png"
+            ? $"http://keypress.serveftp.net:88/OnSaleApi/images/Users/nouser.png"
            : $"http://keypress.serveftp.net:88/OnSaleApi{ImagePath.Substring(1)}";
 
         [Display(Name = "User Type")]

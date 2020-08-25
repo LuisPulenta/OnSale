@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -37,6 +39,13 @@ namespace OnSale.Web
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Account/NotAuthorized";
+                options.AccessDeniedPath = "/Account/NotAuthorized";
+            });
+
 
             services.AddIdentity<User, IdentityRole>(cfg =>
             {
@@ -86,6 +95,19 @@ namespace OnSale.Web
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+            app.UseStatusCodePagesWithReExecute("/error/{0}");
+
+            ////Estas lineas hacen que no se usa la configuracion reginal Español(Argentina)
+            ////sino que se usa la de USA y asi no da problemas la edicion en los precios
+            //app.UseRequestLocalization(new RequestLocalizationOptions
+            //{
+            //    DefaultRequestCulture = new RequestCulture("en-US"),
+            //    SupportedCultures = new[] { new CultureInfo("en-US") },
+            //    SupportedUICultures = new[] { new CultureInfo("en-US") }
+            //});
+
+
+
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
