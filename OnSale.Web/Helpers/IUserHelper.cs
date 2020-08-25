@@ -2,6 +2,7 @@
 using OnSale.Common.Enums;
 using OnSale.Web.Data.Entities;
 using OnSale.Web.Models;
+using System;
 using System.Threading.Tasks;
 
 namespace OnSale.Web.Helpers
@@ -26,5 +27,18 @@ namespace OnSale.Web.Helpers
 
         Task<User> AddUserAsync(AddUserViewModel model, string imagePath, UserType userType);
 
+        Task<IdentityResult> ChangePasswordAsync(User user, string oldPassword, string newPassword);
+
+        Task<IdentityResult> UpdateUserAsync(User user);
+
+        Task<User> GetUserAsync(Guid userId);
+
+        Task<string> GenerateEmailConfirmationTokenAsync(User user);
+
+        Task<IdentityResult> ConfirmEmailAsync(User user, string token);
+
+        Task<string> GeneratePasswordResetTokenAsync(User user);
+
+        Task<IdentityResult> ResetPasswordAsync(User user, string token, string password);
     }
 }
