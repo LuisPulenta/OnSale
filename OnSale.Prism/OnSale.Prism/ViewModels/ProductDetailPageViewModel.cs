@@ -18,6 +18,13 @@ namespace OnSale.Prism.ViewModels
             get => _product;
             set => SetProperty(ref _product, value);
         }
+        public ObservableCollection<ProductImage> Images
+        {
+            get => _images;
+            set => SetProperty(ref _images, value);
+        }
+
+        private ObservableCollection<ProductImage> _images;
 
         public override void OnNavigatedTo(INavigationParameters parameters)
         {
@@ -27,6 +34,7 @@ namespace OnSale.Prism.ViewModels
             {
                 Product = parameters.GetValue<Product>("product");
                 Title = Product.Name;
+                Images = new ObservableCollection<ProductImage>(Product.ProductImages);
             }
         }
 
