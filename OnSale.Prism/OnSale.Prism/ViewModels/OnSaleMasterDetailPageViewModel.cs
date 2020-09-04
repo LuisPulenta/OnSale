@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Newtonsoft.Json;
+using OnSale.Common.Helpers;
 using OnSale.Common.Models;
+using OnSale.Common.Responses;
 using OnSale.Prism.ItemViewModels;
 using OnSale.Prism.Views;
 using Prism.Navigation;
@@ -12,12 +15,32 @@ namespace OnSale.Prism.ViewModels
     {
         private readonly INavigationService _navigationService;
 
+        private UserResponse _user;
+        public UserResponse User
+        {
+            get => _user;
+            set => SetProperty(ref _user, value);
+        }
+
+
         public OnSaleMasterDetailPageViewModel(INavigationService navigationService) : base(navigationService)
         {
             _navigationService = navigationService;
             LoadMenus();
+            LoadUser();
         }
         public ObservableCollection<MenuItemViewModel> Menus { get; set; }
+
+
+        private void LoadUser()
+        {
+            if (Settings.IsLogin)
+            {
+                TokenResponse token = JsonConvert.DeserializeObject<TokenResponse>(Settings.Token);
+                User = token.User;
+            }
+        }
+
 
         private void LoadMenus()
         {
@@ -53,7 +76,7 @@ namespace OnSale.Prism.ViewModels
             {
                 Icon = "ic_exit_to_app",
                 PageName = $"{nameof(LoginPage)}",
-                Title = "Login"
+                Title = Settings.IsLogin ? "Logout" : "Login"
             }
         };
 
