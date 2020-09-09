@@ -1,8 +1,12 @@
-﻿using OnSale.Common.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using OnSale.Common.Entities;
 using OnSale.Common.Enums;
 using OnSale.Web.Data.Entities;
 using OnSale.Web.Helpers;
+using OnSale.Web.Models;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,11 +16,14 @@ namespace OnSale.Web.Data
     {
         private readonly DataContext _context;
         private readonly IUserHelper _userHelper;
+        private readonly Random _random;
 
         public SeedDb(DataContext context, IUserHelper userHelper)
         {
             _context = context;
             _userHelper = userHelper;
+
+            _random = new Random();
         }
 
         public async Task SeedAsync()
@@ -25,8 +32,98 @@ namespace OnSale.Web.Data
             await CheckCountriesAsync();
             await CheckRolesAsync();
             await CheckUserAsync("17157729", "Luis", "Núñez", "luisalbertonu@gmail.com", "156 814 963", "Espora 2052 - Rosedal", UserType.Admin);
+            await CheckCategoriesAsync();
+            await CheckProductsAsync();
 
         }
+
+        private async Task CheckProductsAsync()
+        {
+            if (!_context.Products.Any())
+            {
+                User user = await _userHelper.GetUserAsync("luisalbertonu@gmail.com");
+                
+                Category informatica = await _context.Categories.FirstOrDefaultAsync(c => c.Name == "Informatica");
+                
+                string lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris gravida, nunc vel tristique cursus, velit nibh pulvinar enim.";
+                await AddProductAsync(informatica, lorem, "ApplePencil", 3500000M, new string[] { "ApplePencil", "ApplePencil2"}, user);
+                await AddProductAsync(informatica, lorem, "IPad", 2100000M, new string[] { "IPad", "IPad2", "IPad3" }, user);
+                await AddProductAsync(informatica, lorem, "IPhoneX", 12000000M, new string[] { "IPhoneX", "IPhoneX2", "IPhoneX3", "IPhoneX4"}, user);
+                await AddProductAsync(informatica, lorem, "Notebook", 95000M, new string[] { "Notebook", "Notebook2", "Notebook3", "Notebook4", "Notebook5" }, user);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        private async Task AddProductAsync(Category category, string description, string name, decimal price, string[] images, User user)
+        {
+            Product product = new Product
+            {
+                Category = category,
+                Description = description,
+                IsActive = true,
+                Name = name,
+                Price = price,
+                //ProductImages = new List<ProductImage>(),
+                ProductImages = GetProductImages(images),
+                Qualifications = GetRandomQualifications(description, user)
+            };
+
+            _context.Products.Add(product);
+            await _context.SaveChangesAsync();
+        }
+
+        private ICollection<ProductImage> GetProductImages(string[] images)
+        {
+            List<ProductImage> productImages = new List<ProductImage>();
+            foreach (string image in images)
+            {
+                productImages.Add(new ProductImage { ImageUrl = $"~/images/Products/{image}.jpg" });
+            }
+
+            return productImages;
+        }
+
+
+        private ICollection<Qualification> GetRandomQualifications(string description, User user)
+        {
+            List<Qualification> qualifications = new List<Qualification>();
+            for (int i = 0; i < 10; i++)
+            {
+                qualifications.Add(new Qualification
+                {
+                    Date = DateTime.UtcNow,
+                    Remarks = description,
+                    Score = _random.Next(1, 5),
+                    User = user
+                });
+            }
+
+            return qualifications;
+        }
+
+        private async Task CheckCategoriesAsync()
+        {
+            if (!_context.Categories.Any())
+            {
+                await AddCategoryAsync("Informatica");
+                await AddCategoryAsync("Alimentos");
+                await AddCategoryAsync("Deportes");
+                await AddCategoryAsync("Calzado");
+                await AddCategoryAsync("Indumentaria");
+                await AddCategoryAsync("Juguetes");
+                await AddCategoryAsync("Libreria");
+                await AddCategoryAsync("Mascotas");
+                await AddCategoryAsync("Muebles");
+                await AddCategoryAsync("Viajes");
+            }
+        }
+
+        private async Task AddCategoryAsync(string name)
+        {
+            _context.Categories.Add(new Category { Name = name, ImagePath = $"~/images/Categories/{name}.jpg" });
+            await _context.SaveChangesAsync();
+        }
+
 
         private async Task CheckRolesAsync()
         {

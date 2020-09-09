@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OnSale.Common.Entities;
 using OnSale.Common.Enums;
+using OnSale.Common.Requests;
 using OnSale.Common.Responses;
 using OnSale.Web.Data;
 using OnSale.Web.Data.Entities;
@@ -11,6 +13,7 @@ using OnSale.Web.Helpers;
 using OnSale.Web.Models;
 using System;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace OnSale.Web.Controllers
@@ -309,13 +312,13 @@ namespace OnSale.Web.Controllers
             model.Departments = _combosHelper.GetComboDepartments(model.CityId);
             return View(model);
         }
-        public IActionResult ChangePassword()
+        public IActionResult ChangePasswordMVC()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        public async Task<IActionResult> ChangePasswordMVC(ChangePasswordViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -362,13 +365,13 @@ namespace OnSale.Web.Controllers
 
             return View();
         }
-        public IActionResult RecoverPassword()
+        public IActionResult RecoverPasswordMVC()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> RecoverPassword(RecoverPasswordViewModel model)
+        public async Task<IActionResult> RecoverPasswordMVC(RecoverPasswordViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -420,5 +423,8 @@ namespace OnSale.Web.Controllers
             ViewBag.Message = "User not found.";
             return View(model);
         }
+
+       
+
     }
 }

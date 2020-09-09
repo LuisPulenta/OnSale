@@ -1,4 +1,5 @@
 ﻿using OnSale.Common.Entities;
+using OnSale.Common.Responses;
 using Prism.Navigation;
 using System.Collections.ObjectModel;
 
@@ -11,9 +12,9 @@ namespace OnSale.Prism.ViewModels
             Title = "Product";
         }
 
-        private Product _product;
+        private ProductResponse _product;
 
-        public Product Product
+        public ProductResponse Product
         {
             get => _product;
             set => SetProperty(ref _product, value);
@@ -32,7 +33,7 @@ namespace OnSale.Prism.ViewModels
 
             if (parameters.ContainsKey("product"))
             {
-                Product = parameters.GetValue<Product>("product");
+                Product = parameters.GetValue<ProductResponse>("product");
                 Title = Product.Name;
                 Images = new ObservableCollection<ProductImage>(Product.ProductImages);
             }

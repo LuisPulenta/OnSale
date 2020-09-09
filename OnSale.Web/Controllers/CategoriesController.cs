@@ -11,6 +11,7 @@ using OnSale.Web.Data;
 
 using OnSale.Web.Helpers;
 using OnSale.Web.Models;
+using Vereyon.Web;
 
 namespace OnSale.Web.Controllers
 {
@@ -20,14 +21,17 @@ namespace OnSale.Web.Controllers
         private readonly DataContext _context;
         private readonly IImageHelper _imageHelper;
         private readonly IConverterHelper _converterHelper;
+        private readonly IFlashMessage _flashMessage;
 
         public CategoriesController(DataContext context,
             IImageHelper imageHelper,
-            IConverterHelper converterHelper)
+            IConverterHelper converterHelper,
+            IFlashMessage flashMessage)
         {
             _context = context;
             _imageHelper = imageHelper;
             _converterHelper = converterHelper;
+            this._flashMessage = flashMessage;
         }
 
         // GET: Categories
@@ -153,15 +157,24 @@ namespace OnSale.Web.Controllers
                 return NotFound();
             }
 
-            var Category = await _context.Categories
+            Category category = await _context.Categories
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (Category == null)
+            if (category == null)
             {
                 return NotFound();
             }
 
-            _context.Categories.Remove(Category);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Categories.Remove(category);
+                await _context.SaveChangesAsync();
+                _flashMessage.Confirmation("The category was deleted.");
+            }
+            catch
+            {
+                _flashMessage.Danger("The category can't be deleted because it has related records.");
+            }
+
             return RedirectToAction(nameof(Index));
         }
 

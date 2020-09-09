@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using OnSale.Common.Responses;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace OnSale.Common.Entities
@@ -10,6 +12,7 @@ namespace OnSale.Common.Entities
         [Display(Name = "Image")]
         public string ImageUrl { get; set; }
 
+        
 
         // TODO: Change the path when publish
         public string ImageFullPath => string.IsNullOrEmpty(ImageUrl)
