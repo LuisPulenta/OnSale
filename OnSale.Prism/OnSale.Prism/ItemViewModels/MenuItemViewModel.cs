@@ -26,7 +26,20 @@ namespace OnSale.Prism.ItemViewModels
                 Settings.Token = null;
             }
 
-            await _navigationService.NavigateAsync($"/{nameof(OnSaleMasterDetailPage)}/NavigationPage/{PageName}");
+            if (IsLoginRequired && !Settings.IsLogin)
+            {
+                await App.Current.MainPage.DisplayAlert("Error","Debe estar logueado", "Accept");
+                NavigationParameters parameters = new NavigationParameters
+                    {
+                        { "pageReturn", PageName }
+                    };
+
+                await _navigationService.NavigateAsync($"/{nameof(OnSaleMasterDetailPage)}/NavigationPage/{nameof(LoginPage)}", parameters);
+            }
+            else
+            {
+                await _navigationService.NavigateAsync($"/{nameof(OnSaleMasterDetailPage)}/NavigationPage/{PageName}");
+            }
         }
     }
 }

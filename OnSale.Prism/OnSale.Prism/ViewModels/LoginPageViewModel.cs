@@ -21,6 +21,8 @@ namespace OnSale.Prism.ViewModels
         private readonly INavigationService _navigationService;
         private readonly IApiService _apiService;
 
+        private string _pageReturn;
+
         public LoginPageViewModel(INavigationService navigationService, IApiService apiService) : base(navigationService)
         {
             _navigationService = navigationService;
@@ -54,6 +56,18 @@ namespace OnSale.Prism.ViewModels
             get => _password;
             set => SetProperty(ref _password, value);
         }
+
+
+        public override void OnNavigatedTo(INavigationParameters parameters)
+        {
+            base.OnNavigatedTo(parameters);
+            if (parameters.ContainsKey("pageReturn"))
+            {
+                _pageReturn = parameters.GetValue<string>("pageReturn");
+            }
+        }
+
+
 
         private async void LoginAsync()
         {
@@ -117,8 +131,22 @@ namespace OnSale.Prism.ViewModels
             IsRunning = false;
             IsEnabled = true;
 
-            await _navigationService.NavigateAsync($"/{nameof(OnSaleMasterDetailPage)}/NavigationPage/{nameof(ProductsPage)}");
+
+            //await _navigationService.NavigateAsync($"/{nameof(OnSaleMasterDetailPage)}/NavigationPage/{nameof(ProductsPage)}");
+
+            if (string.IsNullOrEmpty(_pageReturn))
+            {
+                await _navigationService.NavigateAsync($"/{nameof(OnSaleMasterDetailPage)}/NavigationPage/{nameof(ProductsPage)}");
+            }
+            else
+            {
+                await _navigationService.NavigateAsync($"/{nameof(OnSaleMasterDetailPage)}/NavigationPage/{_pageReturn}");
+            }
+
             Password = string.Empty;
+
+
+
 
         }
 
