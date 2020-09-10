@@ -7,20 +7,39 @@
              ios:Page.UseSafeArea="true"
              xmlns:syncfusion="clr-namespace:Syncfusion.SfRotator.XForms;assembly=Syncfusion.SfRotator.XForms"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"  
+             xmlns:rating="clr-namespace:Syncfusion.SfRating.XForms;assembly=Syncfusion.SfRating.XForms"
              x:Class="OnSale.Prism.Views.ProductDetailPage"
              BackgroundColor="{StaticResource ColorBackground}"
+             IconImageSource="ic_card_giftcard_white"
              Title="{Binding Title}">
 
   <StackLayout Padding="5">
     <ScrollView>
       <StackLayout>
+        <StackLayout HorizontalOptions="Center"
+                             Orientation="Horizontal">
+          <Label Text="Qualification"
+                            VerticalOptions="Center"/>
+          <Label FontAttributes="Bold"
+                            FontSize="Large"
+                            Text="{Binding Product.Qualification, StringFormat='{0:N2}'}"/>
+          <Label Text="Q. Number"
+                            VerticalOptions="Center"/>
+          <Label FontAttributes="Bold"
+                            FontSize="Large"
+                            Text="{Binding Product.ProductQualifications, StringFormat='{0:N0}'}"/>
+        </StackLayout>
+        <rating:SfRating IsEnabled="False"
+                                 HorizontalOptions="Center"
+                                 Precision="Exact"
+                                 Value="{Binding Product.Qualification}"/>
         <syncfusion:SfRotator EnableAutoPlay="True"  
                                       EnableLooping="True"
                                       HeightRequest="300"
                                       ItemsSource="{Binding Images}"
                                       NavigationDelay="5000"
                                       NavigationDirection="Horizontal"
-                                      NavigationStripMode="Thumbnail"
+                                      NavigationStripMode="Dots"
                                       NavigationStripPosition="Bottom">
           <syncfusion:SfRotator.ItemTemplate>
             <DataTemplate>
@@ -79,7 +98,7 @@
           <Label Grid.Row="4"
                            Grid.Column="0"
                            FontAttributes="Bold"
-                           Text="Is Starred"
+                           Text="IsStarred"
                            VerticalOptions="Center"/>
           <CheckBox Grid.Row="4"
                               Grid.Column="1"
@@ -92,11 +111,9 @@
     <Button BackgroundColor="Navy"
                 Command="{Binding AddToCartBinding}" 
                 CornerRadius="10"
-                Text="Add to cart"
+                Text="Add To Cart"
                 TextColor="White"
                 VerticalOptions="EndAndExpand"/>
   </StackLayout>
-
-
 
 </ContentPage>
