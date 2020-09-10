@@ -1,5 +1,7 @@
-﻿using OnSale.Common.Responses;
+﻿using OnSale.Common.Helpers;
+using OnSale.Common.Responses;
 using OnSale.Prism.ItemViewModels;
+using OnSale.Prism.Views;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
@@ -16,6 +18,10 @@ namespace OnSale.Prism.ViewModels
         private ProductResponse _product;
         private bool _isRunning;
         private ObservableCollection<QualificationItemViewModel> _qualifications;
+
+        private DelegateCommand _addQualificationCommand;
+        public DelegateCommand AddQualificationCommand => _addQualificationCommand ?? (_addQualificationCommand = new DelegateCommand(AddQualificationAsync));
+
 
         public QualificationsPageViewModel(INavigationService navigationService)
             : base(navigationService)
@@ -42,22 +48,59 @@ namespace OnSale.Prism.ViewModels
 
             if (parameters.ContainsKey("product"))
             {
-                IsRunning = true;
-                _product = parameters.GetValue<ProductResponse>("product");
-                if (_product.Qualifications != null)
-                {
-                    Qualifications = new ObservableCollection<QualificationItemViewModel>(
-                        _product.Qualifications.Select(q => new QualificationItemViewModel(_navigationService)
-                        {
-                            Date = q.Date,
-                            Id = q.Id,
-                            Remarks = q.Remarks,
-                            Score = q.Score
-                        }).OrderByDescending(q=>q.Date).ToList());
-                }
-
-                IsRunning = false;
+                LoadProduct(parameters);
             }
         }
+
+
+        private async void AddQualificationAsync()
+        {
+            if (Settings.IsLogin)
+            {
+                await _navigationService.NavigateAsync(nameof(AddQualificationPage));
+            }
+            else
+            {
+                await App.Current.MainPage.DisplayAlert("Error","LoginFirstMessage", "Accept");
+                NavigationParameters parameters = new NavigationParameters
+        {
+            { "pageReturn", nameof(AddQualificationPage) }
+        };
+
+                await _navigationService.NavigateAsync($"/{nameof(OnSaleMasterDetailPage)}/NavigationPage/{nameof(LoginPage)}", parameters);
+            }
+        }
+
+        public override void OnNavigatedFrom(INavigationParameters parameters)
+        {
+            base.OnNavigatedFrom(parameters);
+
+            if (parameters.ContainsKey("product"))
+            {
+                LoadProduct(parameters);
+            }
+        }
+
+        private void LoadProduct(INavigationParameters parameters)
+        {
+            IsRunning = true;
+            _product = parameters.GetValue<ProductResponse>("product");
+            if (_product.Qualifications != null)
+            {
+                Qualifications = new ObservableCollection<QualificationItemViewModel>(
+                    _product.Qualifications.Select(q => new QualificationItemViewModel(_navigationService)
+                    {
+                        Date = q.Date,
+                        Id = q.Id,
+                        Remarks = q.Remarks,
+                        Score = q.Score
+                    }).OrderByDescending(q=>q.Date).ToList());
+            }
+
+            IsRunning = false;
+        }
+
+        
+
     }
 }
