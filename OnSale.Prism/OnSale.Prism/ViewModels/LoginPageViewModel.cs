@@ -150,9 +150,11 @@ namespace OnSale.Prism.ViewModels
 
         }
 
-        private void ForgotPasswordAsync()
+        private async void ForgotPasswordAsync()
         {
-            //TODO: Pending
+            var parameters = new NavigationParameters();
+            parameters.Add("email", Email);
+            await _navigationService.NavigateAsync(nameof(RecoverPasswordPage),parameters);
         }
 
         private async void RegisterAsync()
