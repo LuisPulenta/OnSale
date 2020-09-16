@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Syncfusion.Xamarin.SfBusyIndicator" Version="17.3.0.9-beta" />
+    <PackageReference Include="Syncfusion.Xamarin.SfNumericTextBox" Version="17.3.0.9-beta" />
     <PackageReference Include="Syncfusion.Xamarin.SfRating" Version="17.3.0.30" />
     <PackageReference Include="Syncfusion.Xamarin.SfRotator" Version="17.3.0.9-beta" />
     <PackageReference Include="Xam.Plugin.Media" Version="5.0.1" />
@@ -21,6 +22,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\ModifyOrderPage.xaml.cs">
+      <DependentUpon>ModifyOrderPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\QualificationDetailPage.xaml.cs">
       <DependentUpon>QualificationDetailPage.xaml</DependentUpon>
     </Compile>
@@ -30,7 +34,19 @@
     <EmbeddedResource Update="Views\AddQualificationPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Views\AddToCartPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\ChangePasswordPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\FinishOrderPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\LoginPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\ModifyOrderPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\ModifyUserPage.xaml">
@@ -66,10 +82,6 @@
     <EmbeddedResource Update="Views\ShowHistoryPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="NewFolder\" />
   </ItemGroup>
 
 </Project>

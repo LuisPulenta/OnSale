@@ -12,6 +12,14 @@ namespace OnSale.Prism.ItemViewModels
     {
         private readonly INavigationService _navigationService;
         private DelegateCommand _selectProductCommand;
+        private DelegateCommand _selectProduct2Command;
+
+        public float Quantity { get; set; }
+
+        public string Remarks { get; set; }
+
+        public decimal Value => (decimal)Quantity * Price;
+
 
         public ProductItemViewModel(INavigationService navigationService)
         {
@@ -19,6 +27,7 @@ namespace OnSale.Prism.ItemViewModels
         }
 
         public DelegateCommand SelectProductCommand => _selectProductCommand ?? (_selectProductCommand = new DelegateCommand(SelectProductAsync));
+        public DelegateCommand SelectProduct2Command => _selectProduct2Command ?? (_selectProduct2Command = new DelegateCommand(SelectProduct2Async));
 
         private async void SelectProductAsync()
         {
@@ -26,11 +35,17 @@ namespace OnSale.Prism.ItemViewModels
                 {
                     { "product", this }
                 };
-            
             Settings.Product = JsonConvert.SerializeObject(this);
             await _navigationService.NavigateAsync(nameof(ProductTabbedPage), parameters);
-            //await _navigationService.NavigateAsync(nameof(QualificationsPage), parameters);
-            
+        }
+
+        private async void SelectProduct2Async()
+        {
+            NavigationParameters parameters = new NavigationParameters
+                {
+                    { "product", this }
+                };
+            await _navigationService.NavigateAsync(nameof(ModifyOrderPage), parameters);
         }
     }
 

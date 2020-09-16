@@ -24,6 +24,7 @@ namespace OnSale.Prism.ItemViewModels
             {
                 Settings.IsLogin = false;
                 Settings.Token = null;
+                Settings.OrderDetails = null; //vacía el carro de compras
             }
 
             if (IsLoginRequired && !Settings.IsLogin)
